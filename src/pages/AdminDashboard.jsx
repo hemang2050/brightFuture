@@ -10,8 +10,9 @@ export const AdminDashboard = () => {
 
   const fetchData = async () => {
     try {
-      const volRes = await fetch("http://localhost:5001/api/volunteers");
-      const projRes = await fetch("http://localhost:5001/api/projects");
+      const volRes = await fetch("https://brightfuture-jnvf.onrender.com/api/volunteers");
+      const projRes = await fetch("https://brightfuture-jnvf.onrender.com/api/projects");
+
       const volData = await volRes.json();
       const projData = await projRes.json();
 
@@ -30,7 +31,7 @@ export const AdminDashboard = () => {
     if (!selectedVolunteer || !selectedProject) return;
 
     try {
-      const response = await fetch("http://localhost:5001/api/assign", {
+      const response = await fetch("https://brightfuture-jnvf.onrender.com/api/assign", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -55,7 +56,7 @@ export const AdminDashboard = () => {
 
   const updateStatus = async (volunteerId, status) => {
     try {
-      const res = await fetch("http://localhost:5001/api/assign/update-status", {
+      const res = await fetch("https://brightfuture-jnvf.onrender.com/api/assign/update-status", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ volunteerId, status })
