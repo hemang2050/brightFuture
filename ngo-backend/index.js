@@ -7,7 +7,7 @@ const app = express();
 
 // Updated CORS configuration
 app.use(cors({
-    origin: "http://localhost:3000", // ✅ Must match the frontend
+    origin: "https://bright-future-smoky.vercel.app", // ✅ Must match the frontend
     credentials: true,              // ✅ Only works with specific origin
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"]
