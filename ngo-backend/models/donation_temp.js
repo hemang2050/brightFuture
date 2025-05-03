@@ -7,4 +7,4 @@ const donationSchema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now }
 });
 
-module.exports = mongoose.model("donation_temp", donationSchema);
+module.exports = mongoose.model("Donation", donationSchema);

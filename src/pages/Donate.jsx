@@ -53,11 +53,13 @@ export const Donate = () => {
     setError("");
   
     try {
+      // Log the exact data being sent to help debug
       const payload = {
         name: form.name.trim(),
         email: form.email.trim(),
         amount: parseFloat(form.amount)
       };
+      console.log("Sending donation data:", payload);
 
       const response = await fetch("https://brightfuture-jnvf.onrender.com/api/donations", {
         method: "POST",
@@ -67,10 +69,21 @@ export const Donate = () => {
         body: JSON.stringify(payload),
       });
       
+      // Log full response for debugging
+      console.log("Response status:", response.status);
+      
+      // Get the response body regardless of status code
+      const responseData = await response.json().catch(err => {
+        console.error("Failed to parse response as JSON:", err);
+        return null;
+      });
+      
+      console.log("Response data:", responseData);
+      
       if (!response.ok) {
-        const errorData = await response.json().catch(() => null);
+        // The server returns { error: "message" } format, not { message: "error" }
         throw new Error(
-          errorData?.message || 
+          responseData?.error || 
           `Server returned ${response.status}: ${response.statusText}`
         );
       }
