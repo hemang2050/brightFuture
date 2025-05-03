@@ -1,9 +1,9 @@
-// src/pages/AdminDashboard.jsx
 import React, { useEffect, useState } from "react";
 
 export const AdminDashboard = () => {
   const [volunteers, setVolunteers] = useState([]);
   const [projects, setProjects] = useState([]);
+  const [donations, setDonations] = useState([]);
   const [selectedVolunteer, setSelectedVolunteer] = useState(null);
   const [selectedProject, setSelectedProject] = useState(null);
   const [message, setMessage] = useState("");
@@ -12,10 +12,8 @@ export const AdminDashboard = () => {
     try {
       const volRes = await fetch("https://brightfuture-jnvf.onrender.com/api/volunteers");
       const projRes = await fetch("https://brightfuture-jnvf.onrender.com/api/projects");
-
       const volData = await volRes.json();
       const projData = await projRes.json();
-
       setVolunteers(volData);
       setProjects(projData);
     } catch (err) {
@@ -23,8 +21,19 @@ export const AdminDashboard = () => {
     }
   };
 
+  const fetchDonations = async () => {
+    try {
+      const res = await fetch("https://brightfuture-jnvf.onrender.com/api/donations");
+      const data = await res.json();
+      setDonations(data);
+    } catch (err) {
+      console.error("Failed to fetch donations:", err);
+    }
+  };
+
   useEffect(() => {
     fetchData();
+    fetchDonations();
   }, []);
 
   const handleAssign = async () => {
@@ -83,7 +92,7 @@ export const AdminDashboard = () => {
         <div className="mb-4 text-center text-blue-700 font-medium">{message}</div>
       )}
 
-      {/* Pending Approvals Section */}
+      {/* Pending Approvals */}
       <div className="mb-10">
         <h2 className="text-2xl font-semibold mb-4">Pending Volunteer Approvals</h2>
         {pendingVolunteers.length === 0 ? (
@@ -117,9 +126,9 @@ export const AdminDashboard = () => {
         )}
       </div>
 
-      {/* Assignment Section */}
+      {/* Assignment */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* Volunteer List */}
+        {/* Volunteers */}
         <div>
           <h2 className="text-xl mb-2">Approved Volunteers</h2>
           {approvedVolunteers.map((vol) => (
@@ -139,7 +148,7 @@ export const AdminDashboard = () => {
           ))}
         </div>
 
-        {/* Filtered Projects */}
+        {/* Projects */}
         <div>
           <h2 className="text-xl mb-2">Projects</h2>
           {projects
@@ -170,6 +179,37 @@ export const AdminDashboard = () => {
           </button>
         </div>
       )}
+
+      {/* Donations Section */}
+      <div className="mt-12">
+        <h2 className="text-2xl font-semibold mb-4">Recent Donations</h2>
+        {donations.length === 0 ? (
+          <p className="text-gray-500">No donations yet.</p>
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="min-w-full bg-white border rounded shadow">
+              <thead className="bg-blue-100">
+                <tr>
+                  <th className="px-4 py-2 text-left text-sm font-semibold text-gray-700">Name</th>
+                  <th className="px-4 py-2 text-left text-sm font-semibold text-gray-700">Email</th>
+                  <th className="px-4 py-2 text-left text-sm font-semibold text-gray-700">Amount</th>
+                  <th className="px-4 py-2 text-left text-sm font-semibold text-gray-700">Date</th>
+                </tr>
+              </thead>
+              <tbody>
+                {donations.map((donation) => (
+                  <tr key={donation._id} className="border-t">
+                    <td className="px-4 py-2 text-sm">{donation.name}</td>
+                    <td className="px-4 py-2 text-sm">{donation.email}</td>
+                    <td className="px-4 py-2 text-sm">${donation.amount}</td>
+                    <td className="px-4 py-2 text-sm">{new Date(donation.createdAt).toLocaleDateString()}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

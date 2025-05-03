@@ -17,17 +17,26 @@ export const Donate = () => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleDonate = (e) => {
+  const handleDonate = async (e) => {
     e.preventDefault();
     if (Object.values(form).some((v) => v.trim() === "")) {
       alert("Please fill out all fields.");
       return;
     }
     setProcessing(true);
-    setTimeout(() => {
+  
+    try {
+      await fetch("https://brightfuture-jnvf.onrender.com/api/donations", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
       setProcessing(false);
       setDonated(true);
-    }, 2000);
+    } catch (err) {
+      alert("Failed to donate. Try again later.");
+      setProcessing(false);
+    }
   };
 
   if (donated) {

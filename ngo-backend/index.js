@@ -5,6 +5,8 @@ require("dotenv").config();
 
 const app = express();
 
+const donationRoutes = require("./routes/donations");
+
 // Updated CORS configuration
 app.use(cors({
     origin: "https://bright-future-smoky.vercel.app", // ✅ Must match the frontend
@@ -23,6 +25,8 @@ mongoose.connect(process.env.MONGO_URI)
 app.use('/api/volunteers', require('./routes/volunteers'));
 app.use('/api/projects', require('./routes/projects'));
 app.use('/api/assign', require('./routes/assign'));
+
+app.use("/api/donations", donationRoutes);
 
 const PORT = 5001;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
