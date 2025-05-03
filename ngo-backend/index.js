@@ -5,7 +5,7 @@ require("dotenv").config();
 
 const app = express();
 
-const donationRoutes = require("./routes/donations");
+const donationRoutes = 
 
 // Updated CORS configuration
 app.use(cors({
@@ -26,7 +26,7 @@ app.use('/api/volunteers', require('./routes/volunteers'));
 app.use('/api/projects', require('./routes/projects'));
 app.use('/api/assign', require('./routes/assign'));
 
-app.use("/api/donations", donationRoutes);
+app.use("/api/donations", require("./routes/donations"));
 
 const PORT = 5001;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
