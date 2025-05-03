@@ -5,7 +5,6 @@ require("dotenv").config();
 
 const app = express();
 
-const donationRoutes = 
 
 // Updated CORS configuration
 app.use(cors({
